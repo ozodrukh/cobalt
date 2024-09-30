@@ -78,6 +78,23 @@ export default async function(obj) {
     if (video) {
         return {
             urls: video,
+            metadata: {
+                duration: detail.video.duration,
+                width: detail.video.width,
+                height: detail.video.height,
+
+                description: detail.desc,
+
+                viewsCount: detail.stats.playCount,
+                likesCount: detail.stats.diggCount,
+                commentsCount: detail.stats.commentCount,
+
+                author: detail.author.nickname,
+                username: detail.author.uniqueId,
+
+                track: detail.music.title,
+                trackAuthor: detail.music.authorName,
+            },
             filename: videoFilename,
             headers: { cookie }
         }
@@ -95,12 +112,28 @@ export default async function(obj) {
 
     if (images) {
         let imageLinks = images
-            .map(i => i.imageURL.urlList.find(p => p.includes(".jpeg?")))
-            .map(url => ({ url }));
+            .map(i => ({
+                url: i.imageURL.urlList.find(p => p.includes(".jpeg?")),
+                width: i.imageWidth,
+                height: i.imageHeight
+            }))
 
         return {
             picker: imageLinks,
             urls: audio,
+            metadata: {
+                description: detail.desc,
+
+                viewsCount: detail.stats.playCount,
+                likesCount: detail.stats.diggCount,
+                commentsCount: detail.stats.commentCount,
+
+                author: detail.author.nickname,
+                username: detail.author.uniqueId,
+
+                track: detail.music.title,
+                authorName: detail.music.authorName,
+            },
             audioFilename: audioFilename,
             isAudioOnly: true,
             bestAudio,

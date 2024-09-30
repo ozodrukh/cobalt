@@ -65,6 +65,7 @@ export function createResponse(responseType, responseData) {
 
             case "stream":
                 response = {
+                    metadata: responseData.metadata,
                     url: createStream(responseData)
                 }
                 break;
@@ -79,6 +80,7 @@ export function createResponse(responseType, responseData) {
                 }
 
                 response = {
+                    metadata: responseData.metadata,
                     pickerType: pickerType,
                     picker: responseData.picker,
                     audio: audio
@@ -92,6 +94,7 @@ export function createResponse(responseType, responseData) {
         return {
             status,
             body: {
+                service: responseData.service,
                 status: responseType,
                 ...response
             }

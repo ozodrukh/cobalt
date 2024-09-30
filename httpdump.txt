@@ -1,0 +1,9 @@
+b'GET /aweme/v1/feed/?aweme_id=7338152072837123361&version_name=25.6.2&version_code=250602&build_number=25.6.2&manifest_version_code=250602&update_version_code=250602&openudid=90b4d5772ec23ece&uuid=3399846076082301&_rticket=1715866946414&ts=1715866946&device_brand=Google&device_type=Pixel+7&device_platform=android&resolution=1080%2A2400&dpi=420&os_version=13&os_api=29&carrier_region=US&sys_region=US&region=US&app_name=trill&app_language=en&language=en&timezone_name=America%2FNew_York&timezone_offset=-14400&channel=googleplay&ac=wifi&mcc_mnc=310260&is_my_cn=0&aid=1180&ssmix=a&as=a1qwert123&cp=cbfhckdckkde1 
+
+HTTP/1.1Host: api16-normal-c-useast1a.tiktokv.com
+Connection: keep-alive
+User-Agent: com.ss.android.ugc.trill/250602 (Linux; U; Android 13; en_US; Pixel 7; Build/TD1A.220804.031; Cronet/58.0.2991.0)
+Accept: application/json
+Accept-Language: en-us,en;q=0.5Sec-Fetch-Mode: navigateAccept-Encoding: gzip, deflate, 
+br
+Cookie: odin_tt=149b3a1633dd69d57f1b2bac49e5829a64ac4862df7be52aa293477da6e3a695543aaa2d308191ca3d8274effba15137e4325f1757437dadd130a846e13391d8ffec1434eccd0f193b2777df8861975a
