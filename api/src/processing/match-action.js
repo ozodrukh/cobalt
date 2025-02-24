@@ -213,5 +213,5 @@ export default function({ r, host, audioFormat, isAudioOnly, isAudioMuted, disab
         params.type = "proxy";
     }
 
-    return createResponse(responseType, {...defaultParams, ...params})
+    return createResponse(responseType, {...defaultParams, ...params, videoMetadata: r.videoMetadata })
 }

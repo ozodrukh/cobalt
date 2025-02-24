@@ -38,14 +38,14 @@ export function createResponse(responseType, responseData) {
             case "redirect":
                 response = {
                     url: responseData?.url,
-                    filename: responseData?.filename
+                    filename: responseData?.filename,
                 }
                 break;
 
             case "tunnel":
                 response = {
                     url: createStream(responseData),
-                    filename: responseData?.filename
+                    filename: responseData?.filename,
                 }
                 break;
 
@@ -53,7 +53,7 @@ export function createResponse(responseType, responseData) {
                 response = {
                     picker: responseData?.picker,
                     audio: responseData?.url,
-                    audioFilename: responseData?.filename
+                    audioFilename: responseData?.filename,
                 }
                 break;
 
@@ -68,6 +68,7 @@ export function createResponse(responseType, responseData) {
             status,
             body: {
                 status: responseType,
+                videoMetadata: responseData.videoMetadata,
                 ...response
             }
         }

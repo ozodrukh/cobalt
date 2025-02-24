@@ -1,13 +1,13 @@
 import Cookie from "../cookie/cookie.js";
 
-import { extract } from "../url.js";
-import { genericUserAgent } from "../../config.js";
-import { updateCookie } from "../cookie/manager.js";
-import { createStream } from "../../stream/manage.js";
+import {extract} from "../url.js";
+import {genericUserAgent} from "../../config.js";
+import {updateCookie} from "../cookie/manager.js";
+import {createStream} from "../../stream/manage.js";
 
 const shortDomain = "https://vt.tiktok.com/";
 
-export default async function(obj) {
+export default async function (obj) {
     const cookie = new Cookie({});
     let postId = obj.postId;
 
@@ -17,17 +17,18 @@ export default async function(obj) {
             headers: {
                 "user-agent": genericUserAgent.split(' Chrome/1')[0]
             }
-        }).then(r => r.text()).catch(() => {});
+        }).then(r => r.text()).catch(() => {
+        });
 
-        if (!html) return { error: "fetch.fail" };
+        if (!html) return {error: "fetch.fail"};
 
         if (html.startsWith('<a href="https://')) {
             const extractedURL = html.split('<a href="')[1].split('?')[0];
-            const { patternMatch } = extract(extractedURL);
+            const {patternMatch} = extract(extractedURL);
             postId = patternMatch.postId;
         }
     }
-    if (!postId) return { error: "fetch.short_link" };
+    if (!postId) return {error: "fetch.short_link"};
 
     // should always be /video/, even for photos
     const res = await fetch(`https://tiktok.com/@i/video/${postId}`, {
@@ -53,20 +54,20 @@ export default async function(obj) {
 
         // status_deleted or etc
         if (videoDetail.statusMsg) {
-            return { error: "content.post.unavailable"};
+            return {error: "content.post.unavailable"};
         }
 
         detail = videoDetail?.itemInfo?.itemStruct;
     } catch {
-        return { error: "fetch.fail" };
+        return {error: "fetch.fail"};
     }
 
     if (detail.isContentClassified) {
-        return { error: "content.post.age" };
+        return {error: "content.post.age"};
     }
 
     if (!detail.author) {
-        return { error: "fetch.empty" };
+        return {error: "fetch.empty"};
     }
 
     let video, videoFilename, audioFilename, audio, images,
@@ -96,11 +97,38 @@ export default async function(obj) {
         if (audio.includes("mime_type=audio_mpeg")) bestAudio = 'mp3';
     }
 
+    let videoMetadata = {
+        id: detail.id,
+        description: detail.desc ?? null,
+        video: detail.video ? {
+            width: detail.video.width,
+            height: detail.video.height,
+            duration: detail.video.duration
+        } : null,
+        author: detail.author ? {
+            name: detail.author.nickname,
+            username: detail.author.uniqueId
+        } : null,
+
+        music: detail.music ? {
+            name: detail.music.title,
+            author: detail.music.authorName,
+        } : null,
+
+        stats: detail.stats ? {
+            likes: detail.stats.diggCount,
+            shares: detail.stats.shareCount,
+            comments: detail.stats.commentCount,
+            views: detail.stats.playCount,
+        } : null
+    }
+
     if (video) {
         return {
             urls: video,
             filename: videoFilename,
-            headers: { cookie }
+            headers: {cookie},
+            videoMetadata: videoMetadata,
         }
     }
 
@@ -110,7 +138,8 @@ export default async function(obj) {
             audioFilename: audioFilename,
             isAudioOnly: true,
             bestAudio,
-            headers: { cookie }
+            headers: {cookie},
+            videoMetadata: videoMetadata,
         }
     }
 
@@ -137,7 +166,8 @@ export default async function(obj) {
             audioFilename: audioFilename,
             isAudioOnly: true,
             bestAudio,
-            headers: { cookie }
+            headers: {cookie},
+            videoMetadata: videoMetadata,
         }
     }
 
@@ -147,7 +177,8 @@ export default async function(obj) {
             audioFilename: audioFilename,
             isAudioOnly: true,
             bestAudio,
-            headers: { cookie }
+            headers: {cookie},
+            videoMetadata: videoMetadata,
         }
     }
 }

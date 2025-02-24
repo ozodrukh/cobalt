@@ -299,8 +299,46 @@ export default function(obj) {
 
         if (data?.gql_data) {
             result = extractOldPost(data, id, alwaysProxy)
+
+            let metadata = {
+                width: data.context.media.dimensions.width,
+                height: data.context.media.dimensions.height,
+                description: data.context.caption,
+                author: {
+                    username: data.context.username,
+                    name: data.context.media.owner?.full_name,
+                },
+                stats:{
+                    likes: data.context.likes_count,
+                    comments: data.context.comments_count,
+                    views: data.context.video_views,
+                }
+            }
+
+            result = {
+                ...result,
+                videoMetadata: metadata
+            }
         } else {
             result = extractNewPost(data, id, alwaysProxy)
+
+            let metadata = {
+                description: data.caption.text,
+                author: {
+                    username: data.owner?.username,
+                    name: data.owner?.full_name,
+                },
+                stats:{
+                    likes: data.like_count,
+                    comments: detail.comment_count,
+                    views: data.view_count,
+                }
+            }
+
+            result = {
+                ...result,
+                videoMetadata: metadata
+            }
         }
 
         if (result) return result;
